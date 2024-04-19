@@ -12,6 +12,9 @@ public enum ResponseCode {
 	
     // 500 Internal Server Error
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, false, "서버에 오류가 발생하였습니다."),
+    
+    // 409 Conflict
+    EXSIST_ID_ERROR(HttpStatus.CONFLICT, false, "이미 존재하는 ID 입니다."),
 
     // 200 OK
     READ_SUCCESS(HttpStatus.OK, true, null),
@@ -19,7 +22,7 @@ public enum ResponseCode {
     DELETE_SUCCESS(HttpStatus.OK, true, null),
     
     // 404 Not Found
-    TODO_NOT_FOUND(HttpStatus.NOT_FOUND, false, "해당 TODO가 존재하지 않습니다."),
+    TODO_NOT_FOUND(HttpStatus.NOT_FOUND, false, "해당 데이터가 존재하지 않습니다."),
 	
 	// 201 CREATED POST
 	CREATE_SUCCESS(HttpStatus.CREATED, true, null);

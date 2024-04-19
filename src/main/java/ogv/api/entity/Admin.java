@@ -37,8 +37,8 @@ public class Admin {
 	private String name;
 
 	@Column(nullable = true)
-	private String branch; // 본사인 경우 null
-
+	private String branch = null;
+	
 	@Column(nullable = false)
 	private int createdAt = Util.createdAt();
 
@@ -57,10 +57,10 @@ public class Admin {
 		this.password = password;
 		this.role = role;
 		this.name = name;
-		this.branch = branch;
+		this.branch = Util.checkNull(branch);
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
-		this.loginedAt = loginedAt;
+		this.loginedAt = Util.checkNull(loginedAt);
 	}
 
 }

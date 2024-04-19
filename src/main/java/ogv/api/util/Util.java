@@ -93,4 +93,12 @@ public class Util {
 		
 		return auth;
 	}
+	
+	public static <T> T checkNull(T value) {
+		if(value == null || value == "") {
+			return null;
+		}
+		
+		return value;
+	}
 }
