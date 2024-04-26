@@ -11,13 +11,14 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ogv.api.dto.UserMgmtDto;
 import ogv.api.util.Util;
-import ogv.api.util.Values.ADMIN_ROLE;
+import ogv.api.util.Values.USER_ROLE;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Admin {
+public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +32,7 @@ public class Admin {
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	private ADMIN_ROLE role;
+	private USER_ROLE role;
 
 	@Column(nullable = false)
 	private String name;
@@ -49,9 +50,8 @@ public class Admin {
 	private int loginedAt;
 
 	@Builder
-	public Admin(Long seq, String id, String password, ADMIN_ROLE role, String name, String branch, int createdAt,
+	public User(Long seq, String id, String password, USER_ROLE role, String name, String branch, int createdAt,
 			int updatedAt, int loginedAt) {
-		super();
 		this.seq = seq;
 		this.id = id;
 		this.password = password;
@@ -61,6 +61,19 @@ public class Admin {
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 		this.loginedAt = Util.checkNull(loginedAt);
+	}
+	
+	public void update(UserMgmtDto userMgmtDto) {
+		this.id = userMgmtDto.getId();
+		this.role = userMgmtDto.getRole();
+		this.name = userMgmtDto.getName();
+		this.branch = userMgmtDto.getBranch();
+		this.updatedAt = Util.createdAt();
+	}
+	
+	public void resetPW(String password) {
+		this.password = password;
+		this.updatedAt = Util.createdAt();
 	}
 
 }

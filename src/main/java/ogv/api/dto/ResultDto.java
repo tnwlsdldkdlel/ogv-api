@@ -1,7 +1,5 @@
 package ogv.api.dto;
 
-import org.springframework.data.domain.jaxb.SpringDataJaxb.PageDto;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +30,9 @@ public class ResultDto<T> {
 		this.msg = msg;
 	}
 
-//	public static <T> ResultDto<T> success(T data, String message, PageDto page) {
-//		return new ResultDto<T>(200, message, data, page);
-//	}
+	public static <T> ResultDto<T> success(T data, String message, PageDto page) {
+		return new ResultDto<T>(200, message, data, page);
+	}
 	
 	public static <T> ResultDto<T> success(T data, String message) {
 		return new ResultDto<T>(200, message, data);
@@ -43,5 +41,6 @@ public class ResultDto<T> {
 	public static <T> ResultDto<T> fail(ResponseCode responseCode, T data) {
 		return new ResultDto<T>(responseCode.getHttpStatusCode(), responseCode.getMessage(), data);
 	}
+
 
 }

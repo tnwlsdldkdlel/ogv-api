@@ -8,8 +8,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import jakarta.persistence.EntityManager;
 import lombok.extern.log4j.Log4j2;
-import ogv.api.dto.AdminDto;
-import ogv.api.entity.QAdmin;
+import ogv.api.dto.UserDto;
+import ogv.api.entity.QUser;
 import ogv.api.util.Util;
 
 @Repository
@@ -27,26 +27,26 @@ public class AdminRepositoryImpl implements AdminRepository {
 
 	// 쿠키에 넣을 데이터 - seq, name, role, login time
 	@Override
-	public AdminDto getAuth(String id) {	
-		QAdmin qAdmin = QAdmin.admin;
+	public UserDto getAuth(String id) {	
+		QUser qUser = QUser.user;
 		
 		return queryFactory
-			.select(Projections.fields(AdminDto.class, qAdmin.seq, qAdmin.id, qAdmin.password, qAdmin.name, qAdmin.role, qAdmin.loginedAt))
-			.from(qAdmin)
-			.where(qAdmin.id.eq(id))
+			.select(Projections.fields(UserDto.class, qUser.seq, qUser.id, qUser.password, qUser.name, qUser.role, qUser.loginedAt))
+			.from(qUser)
+			.where(qUser.id.eq(id))
 			.fetchOne();
 	}
 
 	@Transactional
 	@Override
 	public void updateLoginedAt(String id) {
-		QAdmin qAdmin = QAdmin.admin;
+		QUser qUser = QUser.user;
 		
 		queryFactory
-			.update(qAdmin)
-			.set(qAdmin.updatedAt, Util.createdAt())
-			.set(qAdmin.loginedAt, Util.createdAt())
-			.where(qAdmin.id.eq(id))
+			.update(qUser)
+			.set(qUser.updatedAt, Util.createdAt())
+			.set(qUser.loginedAt, Util.createdAt())
+			.where(qUser.id.eq(id))
 			.execute();
 	}
 

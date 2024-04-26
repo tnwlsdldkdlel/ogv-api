@@ -4,18 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ogv.api.util.Values.ADMIN_ROLE;
+import ogv.api.util.Values.USER_ROLE;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AdminDto {
+public class UserDto {
 
 	private Long seq;
 	private String id;
 	private String password;
-	private ADMIN_ROLE role;
+	private USER_ROLE role;
 	private String name;
 	private String branch;
 	private int createdAt;

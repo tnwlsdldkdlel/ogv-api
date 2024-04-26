@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import ogv.api.dto.AdminDto;
+import ogv.api.dto.UserDto;
 import ogv.api.repository.admin.AdminRepository;
 
 @RequiredArgsConstructor
@@ -21,7 +21,7 @@ public class CustomUserDetailService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		log.info("========================= CustomUserDetailService =========================");
 		
-		AdminDto adminDto = adminRepository.getAuth(username);
+		UserDto adminDto = adminRepository.getAuth(username);
 		
 		return new CustomUser(adminDto.getSeq(), adminDto.getId(), adminDto.getPassword(), adminDto.getName(), adminDto.getLoginedAt(), adminDto.getRole());
 	}

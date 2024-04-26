@@ -1,10 +1,10 @@
 package ogv.api.repository.admin;
 
-import ogv.api.dto.AdminDto;
+import ogv.api.dto.UserDto;
 
 public interface AdminRepository {
 	
-	public AdminDto getAuth(String id);
+	public UserDto getAuth(String id);
 	
 	public void updateLoginedAt(String id);
 }
