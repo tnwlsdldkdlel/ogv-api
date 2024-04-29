@@ -9,4 +9,8 @@ public class Values {
 	public static enum SEARCH_TARGET {
 		ALL, ID, NAME
 	}
+	
+	public static enum BRANCH_STATE {
+		Y, N
+	}
 }

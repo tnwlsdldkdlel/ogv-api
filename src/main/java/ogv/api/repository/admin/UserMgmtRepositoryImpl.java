@@ -15,6 +15,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import ogv.api.dto.PageDto;
 import ogv.api.dto.UserMgmtDto;
+import ogv.api.entity.Branch;
 import ogv.api.entity.QUser;
 import ogv.api.entity.User;
 import ogv.api.util.Util;
@@ -48,11 +49,12 @@ public class UserMgmtRepositoryImpl implements UserMgmtRepository {
 	@Transactional
 	@Override
 	public void saveUser(UserMgmtDto userMgmtDto) {
+		Branch branch = em.find(Branch.class, userMgmtDto.getBranch());
 		User admin = User.builder()
 				.id(userMgmtDto.getId())
 				.name(userMgmtDto.getName())
 				.role(userMgmtDto.getRole())
-				.branch(userMgmtDto.getBranch())
+				.branch(branch)
 				.createdAt(Util.createdAt())
 				.updatedAt(Util.createdAt())
 				.password(passwordEncoder.encode(userMgmtDto.getId()))
@@ -112,16 +114,19 @@ public class UserMgmtRepositoryImpl implements UserMgmtRepository {
 
 	@Override
 	public UserMgmtDto getUserInfo(Long seq) {
-		User user = em.find(User.class, seq);
-		
-		return UserMgmtDto.builder()
-				.seq(user.getSeq())
-				.role(user.getRole())
-				.id(user.getId())
-				.name(user.getName())
-				.branch(user.getBranch())
-				.createdAt(user.getCreatedAt())
-				.build();
+		//User user = em.find(User.class, seq);
+		QUser qUser = QUser.user;
+
+//		return UserMgmtDto.builder()
+//				.seq(user.getSeq())
+//				.role(user.getRole())
+//				.id(user.getId())
+//				.name(user.getName())
+//				.branch(user.getBranch())
+//				.createdAt(user.getCreatedAt())
+//				.build();
+			
+			return null;
 				
 	}
 
@@ -129,7 +134,9 @@ public class UserMgmtRepositoryImpl implements UserMgmtRepository {
 	@Override
 	public void updateUser(UserMgmtDto userMgmtDto) {
 		User user = em.find(User.class, userMgmtDto.getSeq());
-		user.update(userMgmtDto);
+		Branch branch = em.find(Branch.class, userMgmtDto.getBranch());
+		
+		user.update(userMgmtDto, branch);
 	}
 
 	@Transactional
