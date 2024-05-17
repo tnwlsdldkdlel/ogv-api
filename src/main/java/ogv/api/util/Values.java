@@ -7,7 +7,7 @@ public class Values {
 	}
 	
 	public static enum SEARCH_TARGET {
-		ALL, ID, NAME
+		ALL, ID, NAME, ACTOR, DIRECTOR
 	}
 	
 	public static enum BRANCH_STATE {

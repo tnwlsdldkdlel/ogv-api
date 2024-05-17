@@ -4,12 +4,16 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,10 +22,10 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Util {
-	
+
 	public static String date() {
 		LocalDate now = LocalDate.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		String formatedNow = now.format(formatter);
 
 		return formatedNow;
@@ -47,11 +51,22 @@ public class Util {
 	}
 
 	public static int getStringToIntDate(String value) {
-		return (int) (new Date(value).getTime() / 1000);
+		try {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = dateFormat.parse(value);
+			return (int) (date.getTime() / 1000);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return -1; // 에러 처리
+		}
 	}
-	
+
 	public static String getIntToStringDate(int value) {
-		return new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(new Date(value * 1000L));
+		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(value * 1000L));
+	}
+
+	public static String getIntToStringDateNotTime(int value) {
+		return new SimpleDateFormat("yyyy-MM-dd").format(new Date(value * 1000L));
 	}
 
 	public static String date(int day) {
@@ -86,19 +101,47 @@ public class Util {
 
 		return builder.toString();
 	}
-	
+
 	public static ArrayList<GrantedAuthority> setAuthRole(SimpleGrantedAuthority simpleGrantedAuthority) {
 		ArrayList<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
 		auth.add(new SimpleGrantedAuthority("ROLE_" + simpleGrantedAuthority));
-		
+
 		return auth;
 	}
-	
+
 	public static <T> T checkNull(T value) {
-		if(value == null || value == "") {
+		if (value == null || value == "") {
 			return null;
 		}
-		
+
 		return value;
+	}
+
+	public static List<Integer> parseGenresInteger(String input) {
+		List<Integer> numbers = new ArrayList<>();
+		Pattern pattern = Pattern.compile("\\d+");
+		Matcher matcher = pattern.matcher(input);
+
+		while (matcher.find()) {
+			int number = Integer.parseInt(matcher.group());
+			numbers.add(number);
+		}
+
+		return numbers;
+	}
+
+	public static List<String> parseGenresString(String input) {
+		List<String> numbers = new ArrayList<>();
+		Pattern pattern = Pattern.compile("\\d+|\\D+");
+		Matcher matcher = pattern.matcher(input);
+
+		while (matcher.find()) {
+			String match = matcher.group();
+			// 대괄호 제거
+			match = match.replaceAll("[\\[\\]]", "");
+			numbers.add(match);
+		}
+
+		return numbers;
 	}
 }

@@ -23,6 +23,8 @@ public class PageDto {
 	private String type;
 	private String search;
 	private SEARCH_TARGET searchTarget;
+	private String start;
+	private String end;
 
 	public Long getPage() {
 		return page;

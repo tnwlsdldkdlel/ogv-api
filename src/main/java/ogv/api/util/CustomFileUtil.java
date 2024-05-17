@@ -11,8 +11,6 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -77,21 +75,15 @@ public class CustomFileUtil {
 		return uploadNames;
 	}
 
-	public ResponseEntity<FileSystemResource> getFile(String fileName) {
+	public String getFilePath(String fileName) {
 		FileSystemResource fileSystemResource = new FileSystemResource(uploadPath + File.separator + fileName);
-
+		uploadPath = uploadPath.replaceAll("\\\\", "/");
+		
 		if (!fileSystemResource.isReadable()) {
-			fileSystemResource = new FileSystemResource(uploadPath + File.separator + "default.jpg");
+			return uploadPath + File.separator + "default.jpg";
+		} else {
+			return uploadPath + File.separator + fileName;
 		}
-
-		HttpHeaders httpHeaders = new HttpHeaders();
-		try {
-			httpHeaders.add("content-type", Files.probeContentType(fileSystemResource.getFile().toPath()));
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-
-		return ResponseEntity.ok().headers(httpHeaders).body(fileSystemResource);
 	}
 
 	public void deleteFiles(List<String> fileNames) {
